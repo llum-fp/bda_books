@@ -1,0 +1,116 @@
+from rdflib import Graph, Literal, RDF, RDFS, Namespace
+
+# Crear un nuevo grafo
+g = Graph()
+
+# Definir namespaces
+NS = Namespace("http://example.org/ns#")
+
+# Clases
+g.add((NS.Book, RDF.type, RDFS.Class))
+g.add((NS.Author, RDF.type, RDFS.Class))
+g.add((NS.Genre, RDF.type, RDFS.Class))
+g.add((NS.ReadInstance, RDF.type, RDFS.Class))
+g.add((NS.Writer, RDF.type, RDFS.Class))
+g.add((NS.Writer, RDFS.subClassOf, NS.Author))
+g.add((NS.Illustrator, RDF.type, RDFS.Class))
+g.add((NS.Illustrator, RDFS.subClassOf, NS.Author))
+g.add((NS.Contributor, RDF.type, RDFS.Class))
+g.add((NS.Contributor, RDFS.subClassOf, NS.Author))
+g.add((NS.Editor, RDF.type, RDFS.Class))
+g.add((NS.Editor, RDFS.subClassOf, NS.Author))
+g.add((NS.Translator, RDF.type, RDFS.Class))
+g.add((NS.Translator, RDFS.subClassOf, NS.Author))
+g.add((NS.Reader, RDF.type, RDFS.Class))
+g.add((NS.GenreAssignment, RDF.type, RDFS.Class))
+
+# Propiedades de Book
+
+g.add((NS.hasPages, RDF.type, RDF.Property))
+g.add((NS.hasPages, RDFS.domain, NS.Book))
+g.add((NS.hasPages, RDFS.range, RDFS.Literal))
+
+
+g.add((NS.isSimilarTo, RDF.type, RDF.Property))
+g.add((NS.isSimilarTo, RDFS.domain, NS.Book))
+g.add((NS.isSimilarTo, RDFS.range, NS.Book))
+
+g.add((NS.aboutBook, RDF.type, RDF.Property))
+g.add((NS.aboutBook, RDFS.domain, NS.Book))
+g.add((NS.aboutBook, RDFS.range, NS.ReadInstance))
+
+g.add((NS.hasGenre, RDF.type, RDF.Property))
+g.add((NS.hasGenre, RDFS.domain, NS.Book))
+g.add((NS.hasGenre, RDFS.range, NS.GenreAssignment))
+
+g.add((NS.publishedOn, RDF.type, RDF.Property))
+g.add((NS.publishedOn, RDF.domain, RDF.Book))
+g.add((NS.publishedOn, RDF.range, RDFS.Literal))
+
+
+g.add((NS.writtenBy, RDF.type, RDF.Property))
+g.add((NS.writtenBy, RDFS.domain, NS.Book))
+g.add((NS.writtenBy, RDFS.range, NS.Writer))
+
+g.add((NS.illustratedBy, RDF.type, RDF.Property))
+g.add((NS.illustratedBy, RDFS.domain, NS.Book))
+g.add((NS.illustratedBy, RDFS.range, NS.Illustrator))
+
+g.add((NS.contributedBy, RDF.type, RDFS.Property))
+g.add((NS.contributedBy, RDFS.domain, NS.Book))
+g.add((NS.contributedBy, RDFS.range, NS.Contributor))
+
+g.add((NS.editedBy, RDF.type, RDFS.Property))
+g.add((NS.editedBy, RDFS.domain, NS.Book))
+g.add((NS.editedBy, RDFS.range, NS.Editor))
+
+g.add((NS.translatedBy, RDF.type, RDFS.Property))
+g.add((NS.translatedBy, RDFS.domain, NS.Book))
+g.add((NS.translatedBy, RDFS.range, NS.Translator))
+
+# Propiedades de Author
+g.add((NS.hasName, RDF.type, RDF.Property))
+g.add((NS.hasName, RDFS.domain, NS.Author))
+g.add((NS.hasName, RDFS.range, RDFS.Literal))
+
+g.add((NS.hasAvgRating, RDF.type, RDF.Property))
+g.add((NS.hasAvgRating, RDFS.domain, NS.Author))
+g.add((NS.hasAvgRating, RDFS.range, RDFS.Literal))
+
+g.add((NS.ratedBy, RDF.type, RDF.Property))
+g.add((NS.ratedBy, RDFS.domain, NS.Author))
+g.add((NS.ratedBy, RDFS.range, NS.Reader))
+
+# Propiedades de GenreAssignment
+g.add((NS.genreType, RDF.type, RDF.Property))
+g.add((NS.genreType, RDFS.domain, NS.GenreAssignment))
+g.add((NS.genreType, RDFS.range, NS.Genre))
+
+g.add((NS.hasProbability, RDF.type, RDF.Property))
+g.add((NS.hasProbability, RDFS.domain, NS.GenreAssignment))
+g.add((NS.hasProbability, RDFS.range, RDFS.Literal))
+
+# Propiedades de Reader
+g.add((NS.hasReadingInstance, RDF.type, RDF.Property))
+g.add((NS.hasReadingInstance, RDFS.domain, NS.Reader))
+g.add((NS.hasReadingInstance, RDFS.range, NS.ReadInstance))
+
+# Propiedades de ReadInstance
+g.add((NS.hasRating, RDF.type, RDF.Property))
+g.add((NS.hasRating, RDFS.domain, NS.ReadInstance))
+g.add((NS.hasRating, RDFS.range, RDFS.Literal))
+
+
+
+
+
+
+# Ejemplo de instancia especíAfica
+g.add((NS.book1, RDF.type, NS.Book))
+g.add((NS.writer1, RDF.type, NS.Writer))
+g.add((NS.genre1, RDF.type, NS.Genre))
+g.add((NS.book1, NS.WrittenBy, NS.writer1))
+g.add((NS.book1, NS.genreAssignment, NS.genre1))
+
+# Serializar el grafo en formato RDF/XML y imprimir directamente
+print(g.serialize(format='xml'))
